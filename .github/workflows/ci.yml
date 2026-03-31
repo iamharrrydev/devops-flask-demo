@@ -37,3 +37,18 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/devops-flask-demo:latest
+    
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform init and validate
+        working-directory: ./terraform
+        run: |
+          terraform init
+          terraform validate
+
+      - name: Validate Kubernetes manifests
+        run: |
+          curl -LO "https://dl.k8s.io/release/$(curl -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          chmod +x kubectl
+          ./kubectl apply --dry-run=client -f k8s/
