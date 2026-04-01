@@ -49,6 +49,7 @@ jobs:
 
       - name: Validate Kubernetes manifests
         run: |
+          pip install pyyaml
           python3 -c "
           import yaml, sys, os
           files = ['k8s/configmap.yml', 'k8s/deployment.yml', 'k8s/service.yml']
